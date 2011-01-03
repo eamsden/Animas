@@ -1,0 +1,26 @@
+Name:               examples
+Version:            0.0
+Description:        Yampa examples
+License:            BSD3
+License-File:       ../LICENSE.txt
+Copyright:          Henrik Nilsson, Antony Courtney and Yale University, (c) 2003
+Author:             Antony Courtney, Paul Hudak, Henrik Nilsson, John Peterson
+Maintainer:         George Giorgidze (GGG at CS dot NOTT dot AC dot UK)
+Stability:          provisional
+Homepage:           http://www.haskell.org/yampa/
+Category:           Reactivity, FRP
+Synopsis:           Yampa examples
+Build-Depends:      base, haskell98, Yampa >= 0.9.2
+
+Executable:         Elevator
+Main-is:            testElevatorMain.hs
+ghc-options:        -O -fglasgow-exts -farrows
+Hs-Source-Dirs:     Elevator
+Other-modules:      Elevator
+
+Executable:         TailgatingDetector
+Main-is:            TestTGMain.hs
+ghc-options:        -O -fglasgow-exts -farrows
+Hs-Source-Dirs:     TailgatingDetector
+Other-modules:      TailgatingDetector
+
