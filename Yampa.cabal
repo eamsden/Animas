@@ -13,7 +13,7 @@ description: Domain-specific language embedded in Haskell for programming hybrid
 build-type: Simple
 Tested-With:        GHC
 Extra-Source-Files:
-  README-1ST.txt
+  README.txt
 
   tests/AFRPTests.hs,         tests/AFRPTestsCommon.hs,        tests/AFRPTestsArr.hs,
   tests/AFRPTestsComp.hs,     tests/AFRPTestsFirstSecond.hs,   tests/AFRPTestsLaws.hs,
