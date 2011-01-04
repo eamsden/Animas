@@ -1014,8 +1014,8 @@ edgeJust = edgeBy isJustEdge (Just undefined)
 -- | Compare the input at the current and previous instant 
 -- and produce an event based on the comparison
 edgeBy :: (a -> a -> Maybe b) -- ^ Comparison function.
-                              -- An event will at any instant where the value
-                              -- of this function is 'Just'
+                              -- An event will occur at any instant where the 
+                              -- value of this function is 'Just'.
           -> a                -- ^ initial \"previous\" instant.
           -> SF a (Event b)   -- ^ Signal function comparing instants
 edgeBy isEdge a_init = SF {sfTF = tf0}
@@ -1430,14 +1430,20 @@ old_accumBy f b_init = switch (never &&& identity) $ \a -> abAux (f b_init a)
     where
         abAux b = switch (now b &&& notYet) $ \a -> abAux (f b a)
 
-
-accumBy :: (b -> a -> b) -> b -> SF (Event a) (Event b)
+-- | Provide a function and initial accumulator to process events, produce
+-- each new accumulator vale as an event.
+accumBy :: (b -> a -> b) -- ^ Function from accumulator and event value to
+                         -- accumulator.
+           -> b          -- ^ Initial accumulator value
+           -> SF (Event a) (Event b) -- ^ Signal function processing events
+                                     -- with accumulator function
 accumBy g b_init = epPrim f b_init NoEvent
     where
         f b a = (b', Event b', NoEvent)
             where
                 b' = g b a
 
+-- | As in 'accumBy' but produce the accumulator value as a continuous signal.
 accumHoldBy :: (b -> a -> b) -> b -> SF (Event a) b
 accumHoldBy g b_init = epPrim f b_init b_init
     where
@@ -1445,22 +1451,31 @@ accumHoldBy g b_init = epPrim f b_init b_init
             where
                 b' = g b a
 
+-- | Decoupled version of 'accumHoldBy'. Output signal changes at the instant
+-- /after/ an event.
 dAccumHoldBy :: (b -> a -> b) -> b -> SF (Event a) b
 dAccumHoldBy f a_init = accumHoldBy f a_init >>> iPre a_init
 
+-- | For backwards compatibility only.
 old_accumFilter :: (c -> a -> (c, Maybe b)) -> c -> SF (Event a) (Event b)
 old_accumFilter f c_init = switch (never &&& identity) $ \a -> afAux (f c_init a)
     where
         afAux (c, Nothing) = switch (never &&& notYet) $ \a -> afAux (f c a)
         afAux (c, Just b)  = switch (now b &&& notYet) $ \a -> afAux (f c a)
 
-accumFilter :: (c -> a -> (c, Maybe b)) -> c -> SF (Event a) (Event b)
+-- | Filter events with an accumulator.
+accumFilter :: (c -> a -> (c, Maybe b)) -- ^ Function from accumulator value and
+                                        -- event value to new accumulator value
+                                        -- and possible event value.
+               -> c                     -- ^ Initial accumulator value.
+               -> SF (Event a) (Event b) -- ^ Signal function filtering events.
 accumFilter g c_init = epPrim f c_init NoEvent
     where
         f c a = case g c a of
                     (c', Nothing) -> (c', NoEvent, NoEvent)
                     (c', Just b)  -> (c', Event b, NoEvent)
 
+-- | For backwards compatibility only.
 old_pre :: SF a a
 old_pre = SF {sfTF = tf0}
     where
@@ -1470,19 +1485,27 @@ old_pre = SF {sfTF = tf0}
 	    where
 		tf _ a = (preAux a, a_prev)
 
+-- | For backwards compatibility only.
 old_iPre :: a -> SF a a
 old_iPre = (--> old_pre)
 
+-- | Uninitialized one-instant delay. 
 pre :: SF a a
 pre = sscanPrim f uninit uninit
     where
         f c a = Just (a, c)
         uninit = usrErr "AFRP" "pre" "Uninitialized pre operator."
 
-iPre :: a -> SF a a
+-- | Iniitialized one-instant delay
+iPre :: a         -- ^ Value of delayed function at first instant
+        -> SF a a -- ^ One-instant delay
 iPre = (--> pre)
 
-delay :: Time -> a -> SF a a
+-- | Delay a (non-event) signal by a specific time offsent. For events please
+-- use 'delayEvent'.
+delay :: Time      -- ^ Time offset to delay signal by
+         -> a      -- ^ Initial value until time offset is reached
+         -> SF a a -- ^ delayed signal function
 delay q a_init | q < 0     = usrErr "AFRP" "delay" "Negative delay."
                | q == 0    = identity
                | otherwise = SF {sfTF = tf0}
@@ -1505,6 +1528,7 @@ delay q a_init | q < 0     = usrErr "AFRP" "delay" "Negative delay."
                             | t_diff < bdt = (delayAux rbuf buf t_diff a, a)
                             | otherwise    = nextSmpl rbuf buf' (t_diff-bdt) ba
                 
+-- | Integrate a signal with respect to time.
 {-# INLINE integral #-}
 integral :: VectorSpace a s => SF a a
 integral = SF {sfTF = tf0}
