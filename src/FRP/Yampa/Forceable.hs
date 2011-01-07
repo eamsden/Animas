@@ -1,4 +1,3 @@
------------------------------------------------------------------------------------------
 -- |
 -- Module      :  FRP.Yampa.Forceable
 -- Copyright   :  (c) Zhanyong Wan, Yale University, 2003
@@ -9,12 +8,13 @@
 -- Portability :  portable
 --
 -- Hyperstrict evaluation.
------------------------------------------------------------------------------------------
+
 
 module FRP.Yampa.Forceable where
 
-
+-- | Typeclass for values whose entire structure may be made strict
 class Forceable a where
+    -- | Forces the value of an expression and returns it
     force :: a -> a
 
 

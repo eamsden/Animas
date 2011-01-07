@@ -1,4 +1,3 @@
------------------------------------------------------------------------------------------
 -- |
 -- Module      :  FRP.Yampa.Diagnostics
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
@@ -9,13 +8,20 @@
 -- Portability :  portable
 --
 -- Standardized error-reporting for Yampa
------------------------------------------------------------------------------------------
 
 module FRP.Yampa.Diagnostics where
 
-usrErr :: String -> String -> String -> a
+-- | Error created by improper usage
+usrErr :: String -- ^ Module name
+          -> String -- ^ Function name
+          -> String -- ^ Error message
+          -> a 
 usrErr mn fn msg = error (mn ++ "." ++ fn ++ ": " ++ msg)
 
-intErr :: String -> String -> String -> a
+-- | Error internal to yampa (a bug)
+intErr :: String -- ^ Module name
+          -> String -- ^ Function name
+          -> String -- ^ Error message
+          -> a
 intErr mn fn msg = error ("[internal error] " ++ mn ++ "." ++ fn ++ ": "
                           ++ msg)

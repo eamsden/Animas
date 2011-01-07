@@ -1,5 +1,4 @@
 {-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, FlexibleInstances #-}
------------------------------------------------------------------------------------------
 -- |
 -- Module      :  FRP.Yampa.AffineSpace
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
@@ -10,32 +9,25 @@
 -- Portability :  non-portable (GHC extensions)
 --
 -- Affine space type relation.
---
------------------------------------------------------------------------------------------
 
 module FRP.Yampa.AffineSpace where
 
 import FRP.Yampa.VectorSpace
 
-------------------------------------------------------------------------------
--- Affine Space type relation
-------------------------------------------------------------------------------
-
 infix 6 .+^, .-^, .-.
 
--- Maybe origin should not be a class method, even though an origin
--- can be assocoated with any affine space.
--- Maybe distance should not be a class method, in which case the constraint
--- on the coefficient space (a) could be Fractional (i.e., a Field), which
--- seems closer to the mathematical definition of affine space, provided
--- the constraint on the coefficient space for VectorSpace is also Fractional.
-
--- Minimal instance: origin, .+^, .^.
+-- | Typeclass for an Affine space.
+-- Minimal complete definition: 'origin', '(.+^)', '(.-.)' 
 class (Floating a, VectorSpace v a) => AffineSpace p v a | p -> v, v -> a where
+    -- | The origin value of an affine space
     origin   :: p
+    -- | Add a vector to a point, obtaining a new point.
     (.+^)    :: p -> v -> p
+    -- | Subtract a vector from a point, obtaining a new point.
     (.-^)    :: p -> v -> p
+    -- | Take the difference of two points, returning a vector
     (.-.)    :: p -> p -> v
+    -- | The scalar distance between two points.
     distance :: p -> p -> a
 
     p .-^ v = p .+^ (negateVector v)

@@ -1,6 +1,5 @@
------------------------------------------------------------------------------------------
 -- |
--- Module      :  FRP.Yampa.Miscellany
+-- Module      :  FRP.Yampa.MergeableRecord
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
 -- License     :  BSD-style (see the LICENSE file in the distribution)
 --
@@ -49,38 +48,40 @@
 --   let foo<N> = setL1 vN ~+~ foo<N-1>
 --   let fooFinal = mrFinalize foo<N>
 -- @
------------------------------------------------------------------------------------------
 
 module FRP.Yampa.MergeableRecord (
     MergeableRecord(..),
-    MR,			-- Abstract
+    MR,			
     mrMake,
     (~+~),
     mrMerge,
     mrFinalize
 ) where
 
+-- | Typeclass for mergeable records
 class MergeableRecord a where
+    -- | The default value of a record type
     mrDefault :: a
 
 
--- Type constructor for mergeable records.
+-- | Type constructor for mergeable records.
 newtype MergeableRecord a => MR a = MR (a -> a)
 
 
--- Construction of a mergeable record.
+-- | Construction of a mergeable record.
 mrMake :: MergeableRecord a => (a -> a) -> MR a
 mrMake f = (MR f)
 
 
--- Merge two mergeable records. Left "overrides" in case of conflict.
+-- | Merge two mergeable records. Left \"overrides\" in case of conflict.
 (~+~) :: MergeableRecord a => MR a -> MR a -> MR a
 (MR f1) ~+~ (MR f2) = MR (f1 . f2)
 
+-- | Equivalent to '(~+~)' above.
 mrMerge :: MergeableRecord a => MR a -> MR a -> MR a
 mrMerge = (~+~)
 
 
--- Finalization: turn a mergeable record into a record.
+-- | Finalization: turn a mergeable record into a record.
 mrFinalize :: MergeableRecord a => MR a -> a
 mrFinalize (MR f) = f mrDefault

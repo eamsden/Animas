@@ -1,5 +1,4 @@
 {-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, FlexibleInstances #-}
------------------------------------------------------------------------------------------
 -- |
 -- Module      :  FRP.Yampa.VectorSpace
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
@@ -10,34 +9,33 @@
 -- Portability :  non-portable (GHC extensions)
 --
 -- Vector space type relation and basic instances.
---
------------------------------------------------------------------------------------------
 
 module FRP.Yampa.VectorSpace where
-
-------------------------------------------------------------------------------
--- Vector space type relation
-------------------------------------------------------------------------------
 
 infixr *^
 infixl ^/
 infix 7 `dot`
 infixl 6 ^+^, ^-^
 
--- Maybe norm and normalize should not be class methods, in which case
--- the constraint on the coefficient space (a) should (or, at least, could)
--- be Fractional (roughly a Field) rather than Floating.
-
--- Minimal instance: zeroVector, (*^), (^+^), dot
+-- | Type class for a vector space
 class Floating a => VectorSpace v a | v -> a where
+    -- | Vector with no magnitude
     zeroVector   :: v
+    -- | Scale the magnitude
     (*^)         :: a -> v -> v
+    -- | De-scale the magnitude
     (^/)         :: v -> a -> v
+    -- | Negation
     negateVector :: v -> v
+    -- | Combine two vectors additively
     (^+^)        :: v -> v -> v
+    -- | Subtract a vector from another
     (^-^)        :: v -> v -> v
+    -- | Take the dot-product of two vectors
     dot          :: v -> v -> a
+    -- | Vector norm
     norm	 :: v -> a
+    -- | Produce a unit vector in the direction of a vector
     normalize	 :: v -> v
 
     v ^/ a = (1/a) *^ v
@@ -51,10 +49,6 @@ class Floating a => VectorSpace v a | v -> a where
     normalize v = if nv /= 0 then v ^/ nv else error "normalize: zero vector"
         where
 	    nv = norm v
-
-------------------------------------------------------------------------------
--- Vector space instances for Float and Double
-------------------------------------------------------------------------------
 
 instance VectorSpace Float Float where
     zeroVector = 0
@@ -87,10 +81,6 @@ instance VectorSpace Double Double where
 
     x1 `dot` x2 = x1 * x2
 
-
-------------------------------------------------------------------------------
--- Vector space instances for small tuples of Floating
-------------------------------------------------------------------------------
 
 instance Floating a => VectorSpace (a,a) a where
     zeroVector = (0,0)
@@ -155,6 +145,3 @@ instance Floating a => VectorSpace (a,a,a,a,a) a where
 
     (x1,y1,z1,u1,v1) `dot` (x2,y2,z2,u2,v2) =
         x1 * x2 + y1 * y2 + z1 * z2 + u1 * u2 + v1 * v2
-
-
-

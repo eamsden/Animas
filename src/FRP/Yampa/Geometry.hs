@@ -1,4 +1,3 @@
------------------------------------------------------------------------------------------
 -- |
 -- Module      :  FRP.Yampa.Geometry
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
@@ -9,7 +8,7 @@
 -- Portability :  non-portable (GHC extensions)
 --
 -- Basic geometrical abstractions.
------------------------------------------------------------------------------------------
+
 
 module FRP.Yampa.Geometry (
     module FRP.Yampa.VectorSpace,

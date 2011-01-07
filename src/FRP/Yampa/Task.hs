@@ -1,5 +1,4 @@
 {-# LANGUAGE Rank2Types #-}
------------------------------------------------------------------------------------------
 -- |
 -- Module      :  FRP.Yampa.Task
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
@@ -11,7 +10,6 @@
 --
 -- Task abstraction on top of signal transformers.
 --
------------------------------------------------------------------------------------------
 
 module FRP.Yampa.Task (
     Task,

@@ -1,4 +1,3 @@
------------------------------------------------------------------------------------------
 -- |
 -- Module      :  FRP.Yampa.Internals
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
@@ -16,18 +15,12 @@
 -- debugging purposes, or the like. Be aware that the internal details
 -- may change. Relying on this interface means that your code is not
 -- insulated against such changes.
------------------------------------------------------------------------------------------
 
 module FRP.Yampa.Internals (
-    Event(..)		-- The event type, its constructors, and instances.
+    Event(..)		
 ) where
 
 import FRP.Yampa.Event
-
-
-------------------------------------------------------------------------------
--- Extra Event instances
-------------------------------------------------------------------------------
 
 instance Show a => Show (Event a) where
     showsPrec d NoEvent   = showString "NoEvent"

@@ -364,7 +364,7 @@ arrPrim f = SF {sfTF = \a -> (sfArrG f, f a)}
 
 {-# RULES "arrPrim/arrEPrim" arrPrim = arrEPrim #-}
 -- | Lifts a function with an event input to a pure signal function
--- on events. Use 'arr' from the 'Arrow' class, rather than this functions.
+-- on events. Use 'arr' from the 'Arrow' class, rather than this function.
 arrEPrim :: (Event a -> b) -> SF (Event a) b
 arrEPrim f = SF {sfTF = \a -> (sfArrE f (f NoEvent), f a)}
 
