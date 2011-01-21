@@ -1,17 +1,16 @@
-name: Yampa
-version: 0.9.2.3
-cabal-Version: >= 1.2
+name: Animas
+version: 0.1
+cabal-Version: >= 1.8
 license: BSD3
 license-file: LICENSE
-author: Henrik Nilsson, Antony Courtney
-maintainer: George Giorgidze (GGG at CS dot NOTT dot AC dot UK)
-homepage: http://www.haskell.org/yampa/
+author: Edward Amsden, Henrik Nilsson, Antony Courtney
+maintainer: Edward Amsden (edwardamsden@gmail.com)
+homepage: http://www.edwardamsden.com/animas/
 category: Reactivity, FRP
-synopsis: Library for programming hybrid systems.
-description: Domain-specific language embedded in Haskell for programming hybrid (mixed discrete-time and continuous-time) systems.
-             Yampa is based on the concepts of Functional Reactive Programming (FRP) and is structured using arrow combinators.
+synopsis: Updated version of Yampa: a library for programming hybrid systems.
+description: A library for declarative programming of reactive systems
 build-type: Simple
-Tested-With:        GHC
+Tested-With: GHC
 Extra-Source-Files:
   README.txt
 
@@ -38,20 +37,20 @@ library
   ghc-options : -O2 -Wall -fno-warn-name-shadowing
   build-Depends: base, random
   exposed-modules:
-    FRP.Yampa
-    FRP.Yampa.AffineSpace
-    FRP.Yampa.Event
-    FRP.Yampa.Geometry
-    FRP.Yampa.MergeableRecord
-    FRP.Yampa.Point2
-    FRP.Yampa.Utilities
-    FRP.Yampa.Vector3
-    FRP.Yampa.Forceable
-    FRP.Yampa.Point3
-    FRP.Yampa.Vector2
-    FRP.Yampa.VectorSpace
-    FRP.Yampa.Miscellany
-    FRP.Yampa.Task
-    FRP.Yampa.Internals
+    FRP.Animas
+    FRP.Animas.AffineSpace
+    FRP.Animas.Event
+    FRP.Animas.Geometry
+    FRP.Animas.MergeableRecord
+    FRP.Animas.Point2
+    FRP.Animas.Utilities
+    FRP.Animas.Vector3
+    FRP.Animas.Forceable
+    FRP.Animas.Point3
+    FRP.Animas.Vector2
+    FRP.Animas.VectorSpace
+    FRP.Animas.Miscellany
+    FRP.Animas.Task
+    FRP.Animas.Internals
   other-modules:
-    FRP.Yampa.Diagnostics
+    FRP.Animas.Diagnostics

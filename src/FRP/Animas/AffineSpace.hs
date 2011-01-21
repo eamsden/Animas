@@ -1,6 +1,6 @@
 {-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, FlexibleInstances #-}
 -- |
--- Module      :  FRP.Yampa.AffineSpace
+-- Module      :  FRP.Animas.AffineSpace
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
 -- License     :  BSD-style (see the LICENSE file in the distribution)
 --
@@ -10,9 +10,9 @@
 --
 -- Affine space type relation.
 
-module FRP.Yampa.AffineSpace where
+module FRP.Animas.AffineSpace where
 
-import FRP.Yampa.VectorSpace
+import FRP.Animas.VectorSpace
 
 infix 6 .+^, .-^, .-.
 

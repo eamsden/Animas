@@ -1,6 +1,6 @@
 {-# LANGUAGE MultiParamTypeClasses, FunctionalDependencies, FlexibleInstances #-}
 -- |
--- Module      :  FRP.Yampa.VectorSpace
+-- Module      :  FRP.Animas.VectorSpace
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
 -- License     :  BSD-style (see the LICENSE file in the distribution)
 --
@@ -10,7 +10,7 @@
 --
 -- Vector space type relation and basic instances.
 
-module FRP.Yampa.VectorSpace where
+module FRP.Animas.VectorSpace where
 
 infixr *^
 infixl ^/

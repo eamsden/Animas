@@ -1,6 +1,6 @@
 {-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
 -- |
--- Module      :  FRP.Yampa.Vector3
+-- Module      :  FRP.Animas.Vector3
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
 -- License     :  BSD-style (see the LICENSE file in the distribution)
 --
@@ -12,7 +12,7 @@
 --
 -- ToDo: Deriving Show, or provide dedicated show instance?
 
-module FRP.Yampa.Vector3 (
+module FRP.Animas.Vector3 (
 
     Vector3,
     vector3,
@@ -28,8 +28,8 @@ module FRP.Yampa.Vector3 (
     vector3Rotate
 ) where
 
-import FRP.Yampa.VectorSpace
-import FRP.Yampa.Forceable
+import FRP.Animas.VectorSpace
+import FRP.Animas.Forceable
 
 -- | 3-dimensional vector
 data RealFloat a => Vector3 a = Vector3 !a !a !a deriving (Eq, Show)

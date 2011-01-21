@@ -1,5 +1,5 @@
 -- |
--- Module      :  FRP.Yampa.Miscellany
+-- Module      :  FRP.Animas.Miscellany
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
 -- License     :  BSD-style (see the LICENSE file in the distribution)
 --
@@ -15,7 +15,7 @@
 -- !!! Better to use '<<<' and '>>>' for, respectively,
 -- !!! function composition and reverse function composition.
 
-module FRP.Yampa.Miscellany (
+module FRP.Animas.Miscellany (
     ( # ),
     dup,
     swap,

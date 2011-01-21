@@ -1,5 +1,5 @@
 -- |
--- Module      :  FRP.Yampa.Diagnostics
+-- Module      :  FRP.Animas.Diagnostics
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
 -- License     :  BSD-style (see the LICENSE file in the distribution)
 --
@@ -7,9 +7,9 @@
 -- Stability   :  provisional
 -- Portability :  portable
 --
--- Standardized error-reporting for Yampa
+-- Standardized error-reporting for Animas
 
-module FRP.Yampa.Diagnostics where
+module FRP.Animas.Diagnostics where
 
 -- | Error created by improper usage
 usrErr :: String -- ^ Module name

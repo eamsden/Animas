@@ -1,5 +1,5 @@
 -- |
--- Module      :  FRP.Yampa.MergeableRecord
+-- Module      :  FRP.Animas.MergeableRecord
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
 -- License     :  BSD-style (see the LICENSE file in the distribution)
 --
@@ -49,7 +49,7 @@
 --   let fooFinal = mrFinalize foo<N>
 -- @
 
-module FRP.Yampa.MergeableRecord (
+module FRP.Animas.MergeableRecord (
     MergeableRecord(..),
     MR,			
     mrMake,

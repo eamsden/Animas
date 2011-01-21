@@ -1,6 +1,6 @@
 {-# LANGUAGE Rank2Types #-}
 -- |
--- Module      :  FRP.Yampa.Task
+-- Module      :  FRP.Animas.Task
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
 -- License     :  BSD-style (see the LICENSE file in the distribution)
 --
@@ -11,7 +11,7 @@
 -- Task abstraction on top of signal transformers.
 --
 
-module FRP.Yampa.Task (
+module FRP.Animas.Task (
     Task,
     mkTask,	-- :: SF a (b, Event c) -> Task a b c
     runTask,	-- :: Task a b c -> SF a (Either b c)	-- Might change.
@@ -28,9 +28,9 @@ module FRP.Yampa.Task (
     forEver 	-- :: Monad m => m a -> m b
 ) where
 
-import FRP.Yampa
-import FRP.Yampa.Utilities (snap)
-import FRP.Yampa.Diagnostics
+import FRP.Animas
+import FRP.Animas.Utilities (snap)
+import FRP.Animas.Diagnostics
 
 infixl 0 `timeOut`, `abortWhen`, `repeatUntil`
 

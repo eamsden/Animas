@@ -1,6 +1,6 @@
 {-# LANGUAGE MultiParamTypeClasses, FlexibleInstances #-}
 -- |
--- Module      :  FRP.Yampa.Point3
+-- Module      :  FRP.Animas.Point3
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
 -- License     :  BSD-style (see the LICENSE file in the distribution)
 --
@@ -11,17 +11,17 @@
 -- 3D point abstraction (R^3).
 --
 
-module FRP.Yampa.Point3 (
+module FRP.Animas.Point3 (
     Point3(..),
     point3X,
     point3Y,
     point3Z
 ) where
 
-import FRP.Yampa.VectorSpace ()
-import FRP.Yampa.AffineSpace
-import FRP.Yampa.Vector3
-import FRP.Yampa.Forceable
+import FRP.Animas.VectorSpace ()
+import FRP.Animas.AffineSpace
+import FRP.Animas.Vector3
+import FRP.Animas.Forceable
 
 -- | 3-dimensional, real-valued point
 data RealFloat a => Point3 a = Point3 !a !a !a deriving Eq

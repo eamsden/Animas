@@ -1,6 +1,6 @@
 {-# LANGUAGE MultiParamTypeClasses, FlexibleInstances #-}
 -- |
--- Module      :  FRP.Yampa.Point2
+-- Module      :  FRP.Animas.Point2
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
 -- License     :  BSD-style (see the LICENSE file in the distribution)
 --
@@ -13,16 +13,16 @@
 -- ToDo: Deriving Show, or provide dedicated show instance?
 --
 
-module FRP.Yampa.Point2 (
+module FRP.Animas.Point2 (
     Point2(..),
     point2X,
     point2Y
 ) where
 
-import FRP.Yampa.VectorSpace ()
-import FRP.Yampa.AffineSpace
-import FRP.Yampa.Vector2
-import FRP.Yampa.Forceable
+import FRP.Animas.VectorSpace ()
+import FRP.Animas.AffineSpace
+import FRP.Animas.Vector2
+import FRP.Animas.Forceable
 
 -- | Two-dimensional real-valued point
 data RealFloat a => Point2 a = Point2 !a !a deriving (Eq, Show)

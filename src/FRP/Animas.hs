@@ -1,6 +1,6 @@
 {-# LANGUAGE GADTs, Rank2Types, CPP #-}
 -- |
--- Module      :  FRP.Yampa
+-- Module      :  FRP.Animas
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003.
 --                Modifications by Edward Amsden and Matthew Hayden
 -- License     :  BSD-style (see the LICENSE file in the distribution)
@@ -9,10 +9,10 @@
 -- Stability   :  provisional
 -- Portability :  non-portable (GHC extensions)
 
-module FRP.Yampa (
+module FRP.Animas (
     -- * Re-exported modules 
     module Control.Arrow,
-    module FRP.Yampa.VectorSpace,
+    module FRP.Animas.VectorSpace,
     -- * Random-number classes  
     RandomGen(..),
     Random(..),
@@ -162,10 +162,10 @@ import qualified Control.Category (Category(..))
 #endif
 
 import Control.Arrow
-import FRP.Yampa.Diagnostics
-import FRP.Yampa.Miscellany (( # ), dup, swap)
-import FRP.Yampa.Event
-import FRP.Yampa.VectorSpace
+import FRP.Animas.Diagnostics
+import FRP.Animas.Miscellany (( # ), dup, swap)
+import FRP.Animas.Event
+import FRP.Animas.VectorSpace
 
 import Data.IORef
 
@@ -1600,6 +1600,7 @@ reactimate :: IO a
 	      -> (Bool -> b -> IO Bool)
               -> SF a b
 	      -> IO ()
+
 reactimate init sense actuate (SF {sfTF = tf0}) =
     do
         a0 <- init

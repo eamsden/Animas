@@ -1,5 +1,5 @@
 -- |
--- Module      :  FRP.Yampa.Event
+-- Module      :  FRP.Animas.Event
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
 -- License     :  BSD-style (see the LICENSE file in the distribution)
 --
@@ -7,13 +7,13 @@
 -- Stability   :  provisional
 -- Portability :  portable
 --
--- Definition of Yampa Event type and functions on that type.
+-- Definition of Animas Event type and functions on that type.
 --
 
-module FRP.Yampa.Event where
+module FRP.Animas.Event where
 
-import FRP.Yampa.Diagnostics
-import FRP.Yampa.Forceable
+import FRP.Animas.Diagnostics
+import FRP.Animas.Forceable
 
 
 infixl 8 `tag`, `attach`, `gate`

@@ -1,5 +1,5 @@
 -- |
--- Module      :  FRP.Yampa.Utilities
+-- Module      :  FRP.Animas.Utilities
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
 -- License     :  BSD-style (see the LICENSE file in the distribution)
 --
@@ -16,9 +16,9 @@
 --   But to do that, we need access to Event, which we currently do not have.
 --
 -- * The general arrow utilities should be moved to a module
---   FRP.Yampa.Utilities.
+--   FRP.Animas.Utilities.
 --
--- * I'm not sure structuring the Yampa \"core\" according to what is
+-- * I'm not sure structuring the Animas \"core\" according to what is
 --   core functionality and what's not is all that useful. There are
 --   many cases where we want to implement combinators that fairly
 --   easily could be implemented in terms of others as primitives simply
@@ -32,7 +32,7 @@
 --   initial occurrences? Initial occurrences are rather pointless in this
 --   case anyway.
 
-module FRP.Yampa.Utilities (
+module FRP.Animas.Utilities (
     arr2,
     arr3,
     arr4,
@@ -67,8 +67,8 @@ module FRP.Yampa.Utilities (
     old_impulseIntegral
 ) where
 
-import FRP.Yampa.Diagnostics
-import FRP.Yampa
+import FRP.Animas.Diagnostics
+import FRP.Animas
 
 
 infixr 5 `andThen`

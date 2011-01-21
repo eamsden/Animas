@@ -1,6 +1,6 @@
 {-# LANGUAGE MultiParamTypeClasses, FlexibleInstances #-}
 -- |
--- Module      :  FRP.Yampa.Vector2
+-- Module      :  FRP.Animas.Vector2
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003
 -- License     :  BSD-style (see the LICENSE file in the distribution)
 --
@@ -12,7 +12,7 @@
 --
 -- ToDo: Deriving Show, or provide dedicated show instance?
 
-module FRP.Yampa.Vector2 (
+module FRP.Animas.Vector2 (
     Vector2,
     vector2,
     vector2X,
@@ -25,8 +25,8 @@ module FRP.Yampa.Vector2 (
     vector2Rotate
 ) where
 
-import FRP.Yampa.VectorSpace
-import FRP.Yampa.Forceable
+import FRP.Animas.VectorSpace
+import FRP.Animas.Forceable
 
 -- | 2-dimensional vector type
 data RealFloat a => Vector2 a = Vector2 !a !a deriving (Eq,Show)

@@ -1,5 +1,5 @@
 -- |
--- Module      :  FRP.Yampa.Forceable
+-- Module      :  FRP.Animas.Forceable
 -- Copyright   :  (c) Zhanyong Wan, Yale University, 2003
 -- License     :  BSD-style (see the LICENSE file in the distribution)
 --
@@ -10,7 +10,7 @@
 -- Hyperstrict evaluation.
 
 
-module FRP.Yampa.Forceable where
+module FRP.Animas.Forceable where
 
 -- | Typeclass for values whose entire structure may be made strict
 class Forceable a where
