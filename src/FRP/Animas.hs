@@ -22,6 +22,7 @@ module FRP.Animas (
     swap,
     -- * Datatypes
     Time,
+    DTime,
     SF,	
     Event(..),
     -- * Pure signal functions
@@ -150,7 +151,10 @@ module FRP.Animas (
     embed,
     embedSynch,
     deltaEncode,
-    deltaEncodeBy
+    deltaEncodeBy,
+    Step,
+    initStep,
+    step
 ) where
 
 import Control.Monad (unless)
@@ -1227,6 +1231,7 @@ dkSwitch sf10@(SF {sfTF = tf10}) (SF {sfTF = tfe0}) k = SF {sfTF = tf0}
 			    (_, Event c) -> fst (sfTF (k (freeze sf1 dt) c) a),
 		        b)
 
+-- | Pair a value with every value in a collection
 broadcast :: Functor col => a -> col sf -> col (a, sf)
 broadcast a sfs = fmap (\sf -> (a, sf)) sfs
 
@@ -1235,32 +1240,53 @@ broadcast a sfs = fmap (\sf -> (a, sf)) sfs
 parB :: Functor col => col (SF a b) -> SF a (col b)
 parB = par broadcast
 
+-- | Take a single input and broadcast it to a collection of functions,
+-- until an event is triggered, then switch into another SF producing a
+-- collection of outputs
 pSwitchB :: Functor col =>
-    col (SF a b) 
-    -> SF (a, col b) (Event c) 
-    -> (col (SF a b) -> c -> SF a (col b))
+    col (SF a b) -- ^ Initial collection of signal functions
+    -> SF (a, col b) (Event c) -- ^ Produces collection update events
+                               -- based on the input and output of the parallel
+                               -- SF.
+    -> (col (SF a b) -> c -> SF a (col b)) -- ^ Produces the SF to replace
+                                           -- the initial parallel sf
+                                           -- upon event output from the SF
+                                           -- above
     -> SF a (col b)
 pSwitchB = pSwitch broadcast
 
 
+-- | "pSwitchB", but switched output is visible on the sample frame
+-- after the event occurs
 dpSwitchB :: Functor col =>
-    col (SF a b) -> SF (a,col b) (Event c) -> (col (SF a b)->c->SF a (col b))
+    col (SF a b) 
+    -> SF (a,col b) (Event c) 
+    -> (col (SF a b) -> c -> SF a (col b))
     -> SF a (col b)
 dpSwitchB = dpSwitch broadcast
 
-
+-- | Broadcast intput to a collection of signal functions,
+-- and transform that collection with mutator functions carried in events
 rpSwitchB :: Functor col =>
-    col (SF a b) -> SF (a, Event (col (SF a b) -> col (SF a b))) (col b)
+    col (SF a b) -- ^ Initial collection of signal functions
+    -> SF (a, Event (col (SF a b) -> col (SF a b))) (col b) 
+    -- ^ Signal function taking input to broadcast and mutating events and
+    -- producing the output of the collection of SFs
 rpSwitchB = rpSwitch broadcast
 
 
+-- | "rpSwitchB", but switched output is visible on the sample frame after
+-- the event occurs
 drpSwitchB :: Functor col =>
     col (SF a b) -> SF (a, Event (col (SF a b) -> col (SF a b))) (col b)
 drpSwitchB = drpSwitch broadcast
 
+
+-- | Route input to a static collection of signal functions
 par :: Functor col =>
-    (forall sf . (a -> col sf -> col (b, sf)))
-    -> col (SF b c)
+    (forall sf . (a -> col sf -> col (b, sf))) -- ^ Routing function, pair
+                                               -- input values with signal functions
+    -> col (SF b c) -- ^ Collection of signal functions
     -> SF a (col c)
 par rf sfs0 = SF {sfTF = tf0}
     where
@@ -1286,11 +1312,19 @@ parAux rf sfs = SF' tf
 	    in
 	        (parAux rf sfs', cs)
 
+-- | Like "par", but takes an extra SF which looks at the input and output
+-- of the parallel switching combinator and switches in a new SF at that point
 pSwitch :: Functor col =>
-    (forall sf . (a -> col sf -> col (b, sf)))
-    -> col (SF b c)
-    -> SF (a, col c) (Event d)
-    -> (col (SF b c) -> d -> SF a (col c))
+    (forall sf . (a -> col sf -> col (b, sf))) -- ^ Routing function, pair
+                                               -- output with SFs in the
+                                               -- collection
+    -> col (SF b c) -- ^ Initial collection of SFs
+    -> SF (a, col c) (Event d) -- ^ Switching event SF, takes input and output
+                               -- of parallel SF and produces a switching event
+    
+    -> (col (SF b c) -> d -> SF a (col c)) -- ^ Takes collection of SFs and
+                                           -- value of switching event and
+                                           -- produces SF to switch into
     -> SF a (col c)
 pSwitch rf sfs0 sfe0 k = SF {sfTF = tf0}
     where
@@ -1318,6 +1352,8 @@ pSwitch rf sfs0 sfe0 k = SF {sfTF = tf0}
 			    (_,    Event d) -> sfTF (k (freezeCol sfs dt) d) a
 
 
+-- | "pSwitch", but the output from the switched-in signal function is visible
+-- | in the sample frame after the event.
 dpSwitch :: Functor col =>
     (forall sf . (a -> col sf -> col (b, sf)))
     -> col (SF b c)
@@ -1352,13 +1388,20 @@ dpSwitch rf sfs0 sfe0 k = SF {sfTF = tf0}
 							  a),
                          cs)
 
-
+-- | Dynamic collections of signal functions with a routing function
 rpSwitch :: Functor col =>
-    (forall sf . (a -> col sf -> col (b, sf)))
-    -> col (SF b c) -> SF (a, Event (col (SF b c) -> col (SF b c))) (col c)
+    (forall sf . (a -> col sf -> col (b, sf))) -- ^ Routing function
+    -> col (SF b c) -- ^ Initial collection of signal functions
+    -> SF (a, Event (col (SF b c) -> col (SF b c))) (col c) 
+    -- ^ Signal function accepting events which mutate the collection
+                     
 rpSwitch rf sfs =
     pSwitch (rf . fst) sfs (arr (snd . fst)) $ \sfs' f ->
     noEventSnd >=- rpSwitch rf (f sfs')
+    
+    
+-- | "rpSwitch", but the output of a switched-in SF is visible in the sample
+-- frame after the switch
 drpSwitch :: Functor col =>
     (forall sf . (a -> col sf -> col (b, sf)))
     -> col (SF b c) -> SF (a, Event (col (SF b c) -> col (SF b c))) (col c)
@@ -1366,7 +1409,7 @@ drpSwitch rf sfs =
     dpSwitch (rf . fst) sfs (arr (snd . fst)) $ \sfs' f ->
     noEventSnd >=- drpSwitch rf (f sfs')
 
--- | For backwards compatability only.
+-- | For backwards compatibility only.
 old_hold :: a -> SF (Event a) a
 old_hold a_init = switch (constant a_init &&& identity)
                          ((NoEvent >--) . old_hold)
@@ -1696,4 +1739,26 @@ deltaEncodeBy eq dt (a0:as) = (a0, zip (repeat dt) (debAux a0 as))
     where
 	debAux _      []                     = []
 	debAux a_prev (a:as) | a `eq` a_prev = Nothing : debAux a as
-                             | otherwise     = Just a  : debAux a as 
+                             | otherwise     = Just a  : debAux a as
+                                               
+-- | A step in evaluating a signal function
+newtype Step a b = Step { stepSf :: SF' a b }
+
+-- | Initialize a signal function for stepping through
+initStep :: a  -- ^ Value at time 0
+            -> SF a b -- ^ Signal function to animate
+            -> (b, Step a b) -- ^ Output at time 0, next step
+initStep x sf = 
+  let (sf', x') = sfTF sf x in
+  (x', Step sf')
+  
+-- | Go to the next step of a signal function
+step :: DTime -- ^ Time offset
+        -> a -- ^ Value at new time
+        -> Step a b -- ^ Step to evaluate
+        -> (b, Step a b) -- ^ output value at this time, and next step
+step dt x (Step sf) = 
+  let (sf', x') = sfTF' sf dt x in
+  (x', Step sf')
+  
+
