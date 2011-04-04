@@ -49,11 +49,11 @@ module FRP.Animas.Utilities (
     recur,
     andThen,
     sampleWindow,
-    parZ,
-    pSwitchZ,
-    dpSwitchZ,
-    rpSwitchZ,
-    drpSwitchZ,
+ --   parZ,
+ --   pSwitchZ,
+ --   dpSwitchZ,
+ --   rpSwitchZ,
+ --   drpSwitchZ,
     provided,
     old_dHold,
     dTrackAndHold,
@@ -156,7 +156,7 @@ sampleWindow wl q =
             where
 	        w' = w ++ as
 
-safeZip :: String -> [a] -> [b] -> [(a,b)]
+{-safeZip :: String -> [a] -> [b] -> [(a,b)]
 safeZip fn as bs = safeZip' as bs
     where
 	safeZip' _  []     = []
@@ -169,8 +169,8 @@ safeZip fn as bs = safeZip' as bs
 	tail' (_:as) = as
 
 	err = usrErr "AFRPUtilities" fn "Input list too short."
-
-
+-}
+{-
 parZ :: [SF a b] -> SF [a] [b]
 parZ = par (safeZip "parZ")
 
@@ -191,6 +191,7 @@ rpSwitchZ = rpSwitch (safeZip "rpSwitchZ")
 
 drpSwitchZ :: [SF a b] -> SF ([a], Event ([SF a b] -> [SF a b])) [b]
 drpSwitchZ = drpSwitch (safeZip "drpSwitchZ")
+-}
 
 -- | Run one SF if a predicate is true, otherwise run another SF.
 provided :: (a -> Bool) -- ^ Predicate on input values

@@ -1,4 +1,4 @@
-{-# LANGUAGE GADTs, Rank2Types, CPP #-}
+{-# LANGUAGE GADTs, RankNTypes, CPP #-}
 -- |
 -- Module      :  FRP.Animas
 -- Copyright   :  (c) Antony Courtney and Henrik Nilsson, Yale University, 2003.
@@ -1284,8 +1284,9 @@ drpSwitchB = drpSwitch broadcast
 
 -- | Route input to a static collection of signal functions
 par :: Functor col =>
-    (forall sf . (a -> col sf -> col (b, sf))) -- ^ Routing function, pair
-                                               -- input values with signal functions
+    (forall sf. forall col'. Functor col' => (a -> col' sf -> col' (b, sf))) 
+    -- ^ Routing function, pair
+    -- input values with signal functions
     -> col (SF b c) -- ^ Collection of signal functions
     -> SF a (col c)
 par rf sfs0 = SF {sfTF = tf0}
@@ -1299,7 +1300,7 @@ par rf sfs0 = SF {sfTF = tf0}
 		(parAux rf sfs, cs0)
 
 parAux :: Functor col =>
-    (forall sf . (a -> col sf -> col (b, sf)))
+    (forall sf. forall col'. Functor col' => (a -> col' sf -> col' (b, sf)))
     -> col (SF' b c)
     -> SF' a (col c)
 parAux rf sfs = SF' tf 
@@ -1315,9 +1316,8 @@ parAux rf sfs = SF' tf
 -- | Like "par", but takes an extra SF which looks at the input and output
 -- of the parallel switching combinator and switches in a new SF at that point
 pSwitch :: Functor col =>
-    (forall sf . (a -> col sf -> col (b, sf))) -- ^ Routing function, pair
-                                               -- output with SFs in the
-                                               -- collection
+    (forall sf . forall col'. Functor col' => (a -> col' sf -> col' (b, sf))) 
+    -- ^ Routing function, pair output with SFs in the collection
     -> col (SF b c) -- ^ Initial collection of SFs
     -> SF (a, col c) (Event d) -- ^ Switching event SF, takes input and output
                                -- of parallel SF and produces a switching event
@@ -1355,7 +1355,7 @@ pSwitch rf sfs0 sfe0 k = SF {sfTF = tf0}
 -- | "pSwitch", but the output from the switched-in signal function is visible
 -- | in the sample frame after the event.
 dpSwitch :: Functor col =>
-    (forall sf . (a -> col sf -> col (b, sf)))
+    (forall sf. forall col'. Functor col' => (a -> col' sf -> col' (b, sf)))
     -> col (SF b c)
     -> SF (a, col c) (Event d)
     -> (col (SF b c) -> d -> SF a (col c))
@@ -1390,7 +1390,8 @@ dpSwitch rf sfs0 sfe0 k = SF {sfTF = tf0}
 
 -- | Dynamic collections of signal functions with a routing function
 rpSwitch :: Functor col =>
-    (forall sf . (a -> col sf -> col (b, sf))) -- ^ Routing function
+    (forall sf. forall col'. Functor col' => (a -> col' sf -> col' (b, sf))) 
+    -- ^ Routing function
     -> col (SF b c) -- ^ Initial collection of signal functions
     -> SF (a, Event (col (SF b c) -> col (SF b c))) (col c) 
     -- ^ Signal function accepting events which mutate the collection
@@ -1403,7 +1404,7 @@ rpSwitch rf sfs =
 -- | "rpSwitch", but the output of a switched-in SF is visible in the sample
 -- frame after the switch
 drpSwitch :: Functor col =>
-    (forall sf . (a -> col sf -> col (b, sf)))
+    (forall sf. forall col'. Functor col' => (a -> col' sf -> col' (b, sf)))
     -> col (SF b c) -> SF (a, Event (col (SF b c) -> col (SF b c))) (col c)
 drpSwitch rf sfs =
     dpSwitch (rf . fst) sfs (arr (snd . fst)) $ \sfs' f ->
