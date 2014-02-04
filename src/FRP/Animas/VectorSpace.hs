@@ -18,7 +18,7 @@ infix 7 `dot`
 infixl 6 ^+^, ^-^
 
 -- | Type class for a vector space
-class Floating a => VectorSpace v a | v -> a where
+class (Eq a, Floating a) => VectorSpace v a | v -> a where
     -- | Vector with no magnitude
     zeroVector   :: v
     -- | Scale the magnitude
@@ -82,7 +82,7 @@ instance VectorSpace Double Double where
     x1 `dot` x2 = x1 * x2
 
 
-instance Floating a => VectorSpace (a,a) a where
+instance (Eq a,  Floating a) => VectorSpace (a,a) a where
     zeroVector = (0,0)
 
     a *^ (x,y) = (a * x, a * y)
@@ -98,7 +98,7 @@ instance Floating a => VectorSpace (a,a) a where
     (x1,y1) `dot` (x2,y2) = x1 * x2 + y1 * y2
 
 
-instance Floating a => VectorSpace (a,a,a) a where
+instance (Eq a,  Floating a) => VectorSpace (a,a,a) a where
     zeroVector = (0,0,0)
 
     a *^ (x,y,z) = (a * x, a * y, a * z)
@@ -114,7 +114,7 @@ instance Floating a => VectorSpace (a,a,a) a where
     (x1,y1,z1) `dot` (x2,y2,z2) = x1 * x2 + y1 * y2 + z1 * z2
 
 
-instance Floating a => VectorSpace (a,a,a,a) a where
+instance (Eq a,  Floating a) => VectorSpace (a,a,a,a) a where
     zeroVector = (0,0,0,0)
 
     a *^ (x,y,z,u) = (a * x, a * y, a * z, a * u)
@@ -130,7 +130,7 @@ instance Floating a => VectorSpace (a,a,a,a) a where
     (x1,y1,z1,u1) `dot` (x2,y2,z2,u2) = x1 * x2 + y1 * y2 + z1 * z2 + u1 * u2
 
 
-instance Floating a => VectorSpace (a,a,a,a,a) a where
+instance (Eq a,  Floating a) => VectorSpace (a,a,a,a,a) a where
     zeroVector = (0,0,0,0,0)
 
     a *^ (x,y,z,u,v) = (a * x, a * y, a * z, a * u, a * v)
